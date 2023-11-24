@@ -5,7 +5,7 @@ import { Button } from 'primereact/button';
 import { addPost } from '../callback';
 import { useSelector } from 'react-redux';
 
-const FormAddPost = ({ cambiarModo }) => {
+const FormAddPost = ({ cambiarModo }, {reloadPosts}) => {
     const usuario = useSelector((state) => state.credencialesUsuario.credencialesUsuario)
     const [post, setPost] = useState({
         titulo:'',
@@ -43,6 +43,7 @@ const FormAddPost = ({ cambiarModo }) => {
             alert("Ocurrió un error al añadir posteo")
         }
         cambiarModo("lectura")
+        reloadPosts()
     }
     const cancelarPost = (event) => {
         event.preventDefault()

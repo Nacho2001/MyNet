@@ -18,26 +18,27 @@ const Muro = () => {
     const cambiarModo = (modo) => {
         setModo(modo)
     }
+    useEffect(() => {
+        getMyPosts();
+    }, [])
     switch (modo) {
         case "crear":
-            return (
-                <FormAddPost cambiarModo={cambiarModo}/>
+            return(
+                <FormAddPost cambiarModo={cambiarModo} reloadPosts={getMyPosts}/>
             )
+
         case "edicion":
             /*return (
                 <FormEditPost cambiarModo={cambiarModo} publicacion={post}/>
             )*/
         default:
-            useEffect(() => {
-                getMyPosts();
-            }, [])
             return(
                 <>
                     <h2>Mi Muro</h2>
                     <Button label="Añadir post" icon="pi pi-plus" severity="success" onClick={() => cambiarModo("crear")}></Button>
                     <div className="flex flex-wrap">
                         {misPost.map((post) => (
-                            <CardPublicacionMuro publicacion={post} renderizar={getMyPosts} modo={cambiarModo}/>
+                            <CardPublicacionMuro publicacion={post} renderizar={getMyPosts} modoS={cambiarModo}/>
                         ))}
                     </div>
                 </>
