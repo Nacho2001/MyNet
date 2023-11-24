@@ -11,6 +11,7 @@ const Muro = () => {
     const token = useSelector((state) => state.credencialesUsuario.credencialesUsuario.token)
     const username = useSelector((state) => state.credencialesUsuario.credencialesUsuario.username)
     const [misPost, setMisPost] = useState([]);
+    const [selectedPost, setSelectedPost] = useState();
     const [modo, setModo] = useState("lectura");
     const getMyPosts = async () => {
         setMisPost(await getUserPosts(username, token))
@@ -18,6 +19,10 @@ const Muro = () => {
     const cambiarModo = (modo) => {
         setModo(modo)
     }
+    function seleccionarPost(post){
+        setSelectedPost(post);
+    }
+
     useEffect(() => {
         getMyPosts();
     }, [])
@@ -28,9 +33,9 @@ const Muro = () => {
             )
 
         case "edicion":
-            /*return (
-                <FormEditPost cambiarModo={cambiarModo} publicacion={post}/>
-            )*/
+            return(
+                <FormEditPost cambiarModo={cambiarModo} publicacion={selectedPost}/>
+            )
         default:
             return(
                 <>
@@ -38,7 +43,7 @@ const Muro = () => {
                     <Button label="Añadir post" icon="pi pi-plus" severity="success" onClick={() => cambiarModo("crear")}></Button>
                     <div className="flex flex-wrap">
                         {misPost.map((post) => (
-                            <CardPublicacionMuro publicacion={post} renderizar={getMyPosts} modoS={cambiarModo}/>
+                            <CardPublicacionMuro publicacion={post} renderizar={getMyPosts} cambiarModo={cambiarModo} seleccionarPost={seleccionarPost}/>
                         ))}
                     </div>
                 </>

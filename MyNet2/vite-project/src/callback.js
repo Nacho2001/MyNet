@@ -112,12 +112,14 @@ export const deletePost = async (id, token) => {
     }
 }
 
-export const updatePost = async (id, titulo, cuerpo, usuario, fecha, token) => {
+export const updatePost = async (id, titulo, cuerpo, usuario, imagen, fecha, token) => {
     const headers = {'token':token}
     try {
-        await axios.put(`http://localhost:5000/publicaciones/${id}`,{titulo,cuerpo,usuario,fecha}, {headers})
+        await axios.put(`http://localhost:5000/publicaciones/${id}`,{titulo,cuerpo,imagen,usuario, fecha}, {headers})
+        return 1
     } catch (error) {
         console.error(error)
+        return 0
     }
 }
 

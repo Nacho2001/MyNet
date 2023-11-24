@@ -3,8 +3,8 @@ import { Button } from 'primereact/button';
 import { deletePost, getUniquePost } from '../callback';
 import { useSelector } from "react-redux";
 
-const CardPublicacionMuro = (props, {renderizar}) => {
-    let post = props.publicacion
+const CardPublicacionMuro = ({publicacion, renderizar, cambiarModo, seleccionarPost}) => {
+    let post = publicacion
     const usuario = useSelector((state) => state.credencialesUsuario.credencialesUsuario);
 
     const borrarPost = async (event) => {
@@ -28,6 +28,7 @@ const CardPublicacionMuro = (props, {renderizar}) => {
             alert("Ocurrió un error al cargar datos")
             renderizar()
         } else{
+            seleccionarPost(publicacion)
             cambiarModo("edicion")
         }
     }

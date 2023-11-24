@@ -5,15 +5,14 @@ import { Button } from 'primereact/button';
 import { updatePost } from '../callback';
 import { useSelector } from 'react-redux';
 
-const FormEditPost = ({ cambiarModo }, publicacion) => {
+const FormEditPost = ({cambiarModo, publicacion}) => {
     const usuario = useSelector((state) => state.credencialesUsuario.credencialesUsuario)
-    console.log(usuario)
     const [post, setPost] = useState({
+        id: publicacion.id,
         titulo: publicacion.titulo,
         cuerpo: publicacion.cuerpo,
         imagen: publicacion.imagen
     })
-
     const setFormData = (event) => {
         setPost({
             ...post,
@@ -37,11 +36,11 @@ const FormEditPost = ({ cambiarModo }, publicacion) => {
             return [anio, mes, dia].join('-');
         }
         const fecha = formatoFecha();
-        let actualizar = await updatePost(post.titulo, post.cuerpo, usuario.username, post.imagen, fecha, usuario.token);
+        let actualizar = await updatePost(post.id, post.titulo, post.cuerpo, usuario.username, post.imagen, fecha, usuario.token);
         if (actualizar == 1) {
-            alert("Post Añadido exitosamente!")
+            alert("Post editado exitosamente!")
         } else {
-            alert("Ocurrió un error al añadir posteo")
+            alert("Ocurrió un error al modificar el posteo")
         }
         cambiarModo("lectura")
     }
