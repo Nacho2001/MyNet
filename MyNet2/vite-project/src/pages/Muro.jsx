@@ -12,7 +12,6 @@ const Muro = () => {
     const username = useSelector((state) => state.credencialesUsuario.credencialesUsuario.username)
     const [misPost, setMisPost] = useState([]);
     const [modo, setModo] = useState("lectura");
-
     const getMyPosts = async () => {
         setMisPost(await getUserPosts(username, token))
     }
@@ -25,9 +24,9 @@ const Muro = () => {
                 <FormAddPost cambiarModo={cambiarModo}/>
             )
         case "edicion":
-            return (
+            /*return (
                 <FormEditPost cambiarModo={cambiarModo} publicacion={post}/>
-            )
+            )*/
         default:
             useEffect(() => {
                 getMyPosts();
