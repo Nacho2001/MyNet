@@ -1,49 +1,48 @@
 import { useState, useEffect } from "react";
 import { getUserPosts } from "../callback";
 import { useSelector } from "react-redux/es/hooks/useSelector";
-import  CardPublicacion from '../components/CardPublicacion'
+import  CardPublicacionMuro from '../components/CardPublicacionMuro';
 import {Button} from 'primereact/button';
 import FormAddPost from "../components/FormAddPost";
+import FormEditPost from "../components/FormEditPost";
+
 
 const Muro = () => {
     const token = useSelector((state) => state.credencialesUsuario.credencialesUsuario.token)
     const username = useSelector((state) => state.credencialesUsuario.credencialesUsuario.username)
     const [misPost, setMisPost] = useState([]);
-    const [postMode, setPostMode] = useState("read");
-    useEffect(() => {
-        const getMyPost = async () => {
-            setMisPost(await getUserPosts(username, token))
-        }
-        // Corregir funcion Callback
-        getMyPost();
-    }, [])
-    const changeMod = (modo) => {
-        setPostMode(modo)
+    const [modo, setModo] = useState("lectura");
+
+    const getMyPosts = async () => {
+        setMisPost(await getUserPosts(username, token))
     }
-    switch (postMode) {
-        case "create":
+    const cambiarModo = (modo) => {
+        setModo(modo)
+    }
+    switch (modo) {
+        case "crear":
             return (
-                <FormAddPost modo={postMode}/>
+                <FormAddPost cambiarModo={cambiarModo}/>
             )
-            break;
-        case "edit":
+        case "edicion":
             return (
-                <FormPost2/>
+                <FormEditPost cambiarModo={cambiarModo} publicacion={post}/>
             )
-            break
         default:
+            useEffect(() => {
+                getMyPosts();
+            }, [])
             return(
                 <>
                     <h2>Mi Muro</h2>
-                    <Button label="Añadir post" icon="pi pi-plus" severity="success" onClick={() => changeMod("create")}></Button>
-                    <div>
+                    <Button label="Añadir post" icon="pi pi-plus" severity="success" onClick={() => cambiarModo("crear")}></Button>
+                    <div className="flex flex-wrap">
                         {misPost.map((post) => (
-                            <CardPublicacion post={post} key={post.id}/>
+                            <CardPublicacionMuro publicacion={post} renderizar={getMyPosts} modo={cambiarModo}/>
                         ))}
                     </div>
                 </>
             )
-            break;
     }
 }
 

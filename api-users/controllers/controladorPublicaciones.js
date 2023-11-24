@@ -31,7 +31,7 @@ exports.crearPublicacion = async(req,res) => {
             const publicacion = await Publicaciones.create(req.body);
             res.status(201).json({
                 estado:"ok",
-                mensaje:"post realizado exitosamente"
+                mensaje:"Post realizado exitosamente"
             })
         } catch (error) {
             console.error(error)

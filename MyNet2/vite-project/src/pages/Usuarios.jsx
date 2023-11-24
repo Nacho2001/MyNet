@@ -11,6 +11,7 @@ const Usuarios = () => {
         }
         buscarUsuarios();
     }, [])
+
     return (
         <>
             <h2>Lista de Usuarios</h2>

@@ -2,15 +2,16 @@ import {useState} from 'react';
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Button } from 'primereact/button';
-import { addPost } from '../callback';
+import { updatePost } from '../callback';
 import { useSelector } from 'react-redux';
 
-const FormAddPost = ({ cambiarModo }) => {
+const FormEditPost = ({ cambiarModo }, publicacion) => {
     const usuario = useSelector((state) => state.credencialesUsuario.credencialesUsuario)
+    console.log(usuario)
     const [post, setPost] = useState({
-        titulo:'',
-        cuerpo:'',
-        imagen:''
+        titulo: publicacion.titulo,
+        cuerpo: publicacion.cuerpo,
+        imagen: publicacion.imagen
     })
 
     const setFormData = (event) => {
@@ -20,7 +21,7 @@ const FormAddPost = ({ cambiarModo }) => {
         })
 
     }
-    const enviarPost = async (event) => {
+    const actualizarPost = async (event) => {
         event.preventDefault();
         function formatoFecha() {
             let fecha = new Date(),
@@ -36,15 +37,15 @@ const FormAddPost = ({ cambiarModo }) => {
             return [anio, mes, dia].join('-');
         }
         const fecha = formatoFecha();
-        let añadir = await addPost(post.titulo, post.cuerpo, usuario.username, post.imagen, fecha, usuario.token);
-        if (añadir == 1) {
+        let actualizar = await updatePost(post.titulo, post.cuerpo, usuario.username, post.imagen, fecha, usuario.token);
+        if (actualizar == 1) {
             alert("Post Añadido exitosamente!")
         } else {
             alert("Ocurrió un error al añadir posteo")
         }
         cambiarModo("lectura")
     }
-    const cancelarPost = (event) => {
+    const cancelarEdicion = (event) => {
         event.preventDefault()
         cambiarModo("lectura")
     }
@@ -52,23 +53,23 @@ const FormAddPost = ({ cambiarModo }) => {
         <form className='flex flex-column align-items-center'>
             <div className='flex flex-column mt-3'>
                 <label>Titulo</label>
-                <InputText name="titulo" className="mt-1 w-13rem" onChange={(event) => {setFormData(event)}}/>
+                <InputText name="titulo" value={post.titulo} className="mt-1 w-13rem" onChange={(event) => {setFormData(event)}}/>
             </div>
             <div className='flex flex-column mt-1'>
                 <label>Cuerpo</label>
-                <InputTextarea name="cuerpo" className="mt-1 w-13rem" autosize onChange={(event) => {setFormData(event)}}/>
+                <InputTextarea name="cuerpo" value={post.cuerpo} className="mt-1 w-13rem" autosize onChange={(event) => {setFormData(event)}}/>
             </div>
             <div className='flex flex-column mt-1 mb-3'>
                 <label>Imagen</label>
-                <InputText name="imagen" className="mt-1 w-13rem" placeholder="Link de imagen" onChange={(event) => {setFormData(event)}}/>
+                <InputText name="imagen" value={post.imagen} className="mt-1 w-13rem" placeholder="Link de imagen" onChange={(event) => {setFormData(event)}}/>
             </div>
             <div>
-                <Button label="Enviar" className="mr-2" severity="success" icon="pi pi-send" onClick={(event) => {enviarPost(event)}}/>
-                <Button label="Cancelar" severity="danger" icon="pi pi-times" onClick={(event) => {cancelarPost(event)}}/>
+                <Button label="Enviar" className="mr-2" severity="success" icon="pi pi-send" onClick={(event) => {actualizarPost(event)}}/>
+                <Button label="Cancelar" severity="danger" icon="pi pi-times" onClick={(event) => {cancelarEdicion(event)}}/>
             </div>
 
         </form>
     )
 }
 
-export default FormAddPost
+export default FormEditPost

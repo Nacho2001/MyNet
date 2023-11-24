@@ -76,7 +76,7 @@ export const getUniquePost = async (id, token) => {
         const post = resp.data.publicacion
         return post
     } catch (error) {
-        console.error(error);
+        return 0;
     }
 }
 
@@ -91,12 +91,14 @@ export const getUserPosts = async (user, token) => {
     }
 } 
 
-export const addPost = async (titulo,cuerpo,usuario,fecha,token) => {
+export const addPost = async (titulo,cuerpo,usuario,imagen,fecha,token) => {
     const headers = {'token':token}
     try {
-        await axios.post("http://localhost:5000/publicaciones", {titulo,cuerpo,usuario,fecha}, {headers})
+        await axios.post("http://localhost:5000/publicaciones", {titulo,cuerpo,imagen,usuario,fecha}, {headers})
+        return 1;
     } catch (error) {
-        console.error(error)
+        console.log(error)
+        return 0
     }
 }
 
@@ -104,8 +106,9 @@ export const deletePost = async (id, token) => {
     const headers = {'token':token}
     try {
         await axios.delete(`http://localhost:5000/publicaciones/${id}`, {headers})
+        return 1;
     } catch (error) {
-        
+        return 0;
     }
 }
 

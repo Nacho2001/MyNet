@@ -15,7 +15,7 @@ const Home = () => {
     return (
         <>
             <h2>MyNet</h2>
-            <div>
+            <div className='flex flex-wrap'>
                 {publicaciones.map((post) => (
                     <CardPublicacion post={post}/>
                 ))}
